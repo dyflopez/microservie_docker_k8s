@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  mysql_semillero:
+    container_name: mysql_semillero
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: eldany1234
+      MYSQL_DATABASE: udemy
+    volumes:
+      - data-mysql:/var/lib/
+    networks:
+      - tuto
+  activemq:
+    image: rmohr/activemq:5.12.1
+    container_name: activemq
+    environment:
+      - "TZ=Europe/Amsterdam"
+    volumes:
+      - "~/docker-config/activemq/activemq.xml:/conf/activemq.xml"
+    ports:
+      - "61613:61613" # broker (admin:adminactivemq)(amq:amq)
+      - "61616:61616" # broker (admin:adminactivemq)(amq:amq)
+      - "8161:8161"   # web    http://boot2docker:8161/admin (admin:admin)
+  ms_email:
+    container_name: ms_email
+    image: img_ms_email:latest
+    ports:
+      - 8081:8081
+    env_file: ./ms-emial/.env
+    networks:
+      - tuto
+    depends_on:
+      - activemq
+    restart: always
+  ms_usuario:
+    container_name: ms_usuario
+    image: img_mc_usuario:V1
+    ports:
+      - 8080:8080
+    env_file: ./ms-usuario/.env
+    networks:
+      - tuto
+    depends_on:
+      - activemq
+      - mysql_semillero
+    restart: always
+volumes:
+  data-mysql:
+    name: mysql
+networks:
+  tuto:
