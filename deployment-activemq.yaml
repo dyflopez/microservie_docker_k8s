@@ -1,0 +1,28 @@
+# se usa la version apps/V1 para los deployments
+apiVersion: apps/v1
+#timpo
+kind:  Deployment
+metadata:
+#nombre que se le va colocar
+  name: activemq
+#espesificaciones o configuraciones
+spec:
+#cantidad de replicas
+  replicas: 1
+  selector:
+    matchLabels:
+    #nombre de etiqueta
+      rol: active-mq
+  template:
+    metadata:
+      labels:
+      #se debe llamar igual a la etiqueta
+        rol: active-mq
+    spec:
+      containers:
+      #nombre del contenedor e imagen
+        - name: activemq
+          image: rmohr/activemq:5.12.1
+          env:
+          - name: TZ
+            value: Europe/Amsterdam

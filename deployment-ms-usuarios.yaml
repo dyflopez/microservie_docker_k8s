@@ -1,0 +1,32 @@
+# se usa la version apps/V1 para los deployments
+apiVersion: apps/v1
+#tipo
+kind:  Deployment
+metadata:
+#nombre que se le va colocar
+  name: ms-usuario
+#espesificaciones o configuraciones
+spec:
+#cantidad de replicas
+  replicas: 1
+  selector:
+    matchLabels:
+    #nombre de etiqueta
+      rol: user
+  template:
+    metadata:
+      labels:
+      #se debe llamar igual a la etiqueta
+        rol: user
+    spec:
+      containers:
+      #nombre del contenedor e imagen
+        - name: ms-usuario
+          image: daniel0223/usuario
+          ports:
+            - containerPort: 8080
+          env:
+          - name: DB_HOST
+            value: mysql-semillero:3306
+          - name: ACTIVE_MQ_HOST
+            value: activemq:61616

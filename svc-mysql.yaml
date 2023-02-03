@@ -1,0 +1,16 @@
+apiVersion: v1
+kind:  Service
+metadata:
+#debe tener el mismo nombre del  deployment
+  name: mysql-semillero
+spec:
+  ports:
+  #donde maneja el trafico
+    - port: 3306
+      protocol: TCP
+      #puerto que abre en el contenedor
+      targetPort: 3306
+  selector:
+  #seleccionamos la etiqueta la cual va apuntarle el servicio
+    rol: dba
+  type: ClusterIP

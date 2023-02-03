@@ -1,0 +1,32 @@
+# se usa la version apps/V1 para los deployments
+apiVersion: apps/v1
+#timpo
+kind:  Deployment
+metadata:
+#nombre que se le va colocar
+  name: mysql-semillero
+#espesificaciones o configuraciones
+spec:
+#cantidad de replicas
+  replicas: 1
+  selector:
+    matchLabels:
+    #nombre de etiqueta
+      rol: dba
+  template:
+    metadata:
+      labels:
+      #se debe llamar igual a la etiqueta
+        rol: dba
+    spec:
+      containers:
+      #nombre del contenedor e imagen
+        - name: mysql-semillero
+          image: mysql:8
+          ports:
+            - containerPort: 3306
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: eldany1234
+          - name: MYSQL_DATABASE
+            value: udemy
